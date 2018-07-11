@@ -1,12 +1,8 @@
-import numpy as np
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
-from pandas import Series
 import statsmodels.tsa.stattools as ts
 
+
 df = pd.read_csv("real_consumption_final.csv", index_col=0 )
-print(df)
 
 def adf_result(dfname, timeseries):
     result = ts.adfuller(timeseries.dropna())
@@ -14,11 +10,9 @@ def adf_result(dfname, timeseries):
     print('ADF Statistic: %f' % result[0])
     print('p-value: %f' % result[1])
 
+
 adf_result("Row", df["real_com"])
-adf_result("Log", df["log_com"])
 adf_result("Moving Average", df["moving_ave_com"])
-adf_result("The Rate of Change", df["rate_of_change_com"])
 adf_result("Difference Series of Moving Average", df["diff_com"])
-adf_result("Twice Difference Series of Moving Average", df["diff_two_com"])
 adf_result("YoY", df["YoY_com"])
 adf_result("Difference of YoY", df["diff_YoY_com"])
