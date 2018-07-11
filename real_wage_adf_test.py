@@ -1,8 +1,4 @@
-import numpy as np
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
-from pandas import Series
 import statsmodels.tsa.stattools as ts
 
 
@@ -15,10 +11,7 @@ def adf_result(dfname, timeseries):
     print('p-value: %f' % result[1])
 
 adf_result("Row", df["real_wage"])
-adf_result("Log", df["log_wage"])
 adf_result("Moving Average", df["moving_ave_wage"])
-adf_result("The Rate of Change", df["rate_of_change_wage"])
 adf_result("Difference Series of Moving Average", df["diff_wage"])
-adf_result("Twice Difference Series of Moving Average", df["diff_two_wage"])
 adf_result("YoY", df["YoY_wage"])
 adf_result("Difference of YoY", df["diff_YoY_wage"])
