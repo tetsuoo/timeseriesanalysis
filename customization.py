@@ -30,6 +30,9 @@ dfw = pd.concat([first,second,third, fourth], axis=1)
 
 #print(dfw)
 
+a = dfw.mean(axis=1)
+criteria = a['2015']
+
 z = dfw.iloc[0]
 for i in range(len(dfw.index)-1):
     i = i + 1
@@ -38,20 +41,16 @@ for i in range(len(dfw.index)-1):
 
 #print(z)
 
-period = ['Q1', 'Q2', 'Q3', 'Q4']
 dfw =[]
 for i in range(len(z)):
-    dfw.append(z[i])
+    dfw.append(z[i]/criteria*100)
 
 date = []
 time = []
-t = 0
+period = ['Q1', 'Q2', 'Q3', 'Q4']
 for i in range(len(year)):
     for j in range(len(period)):
-        t +=1
         date.append(year[i] + '-' + period[j])
-        time.append(t)
-
 
 dfw = pd.DataFrame(dfw, date, columns=['real_wage'])
 
@@ -60,11 +59,10 @@ dfw = dfw.drop(['1990-Q1', '1990-Q2', '1990-Q3', '1990-Q4',
                 '1992-Q1', '1992-Q2', '1992-Q3', '1992-Q4',
                 '1993-Q1', '1993-Q2', '1993-Q3', '1993-Q4'])
 
-
 ##CREATE OTEHR VALUES
 #Moving Average
 moving_ave_wage1 = dfw.real_wage.rolling(window=4, center=True).mean()
-moving_ave_wage2 = moving_ave_wage1.drop(index='1990-Q1', axis=0)
+moving_ave_wage2 = moving_ave_wage1.drop(index='1994-Q1', axis=0)
 moving_ave_wage2 = moving_ave_wage2.values.tolist()
 moving_ave_wage2.append(np.nan)
 dfw['moving_ave_wage'] = (moving_ave_wage1 + moving_ave_wage2) / 2
