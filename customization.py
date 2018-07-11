@@ -1,9 +1,5 @@
 import numpy as np
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
-from pandas import Series
-import statsmodels.tsa.stattools as ts
 
 
 ##REAL WAGE
@@ -60,30 +56,23 @@ for i in range(len(year)):
 dfw = pd.DataFrame(dfw, date, columns=['real_wage'])
 
 ##CREATE OTEHR VALUES
-#Log
-dfw["log_wage"] = np.log(dfw.real_wage)
-
 #Moving Average
-dfw["moving_ave_wage"] = dfw.real_wage.rolling(window=4,center=True).mean()
-
-#Grouwth Rate
-dfw["rate_of_change_wage"]= dfw['moving_ave_wage'].pct_change()
+moving_ave_wage1 = dfw.real_wage.rolling(window=4, center=True).mean()
+moving_ave_wage2 = moving_ave_wage1.drop(index='1990-Q1', axis=0)
+moving_ave_wage2 = moving_ave_wage2.values.tolist()
+moving_ave_wage2.append(np.nan)
+dfw['moving_ave_wage'] = (moving_ave_wage1 + moving_ave_wage2) / 2
 
 #Differenre of moving average
 dfw["diff_wage"]= dfw['moving_ave_wage'].diff(periods=1)
 
-#2nd orderDifferenre of moving average
-dfw["diff_two_wage"]= dfw['diff_wage'].diff(periods=1)
-
 #Year over Year
-dfw['YoY_wage']= np.nan
-#print(dfw)
-
+dfw['YoY_wage'] = np.nan
 for i in range(len(dfw.YoY_wage)):
     if i>=4:
         dfw.ix[i,'YoY_wage'] = dfw.ix[i,'real_wage']/dfw.ix[i-4,'real_wage']
 
-#Difference of of YoY
+#Difference of YoY
 dfw["diff_YoY_wage"] = dfw['YoY_wage'].diff(periods=1)
 
 
@@ -92,13 +81,7 @@ dfw.to_csv("real_wage_final.csv")
 
 
 
-
-
-
-
-
-
-#############################
+############################
 ##REAL consumption
 #############################
 
@@ -110,20 +93,15 @@ print(dfc.head())
 
 
 ##CREATE OTEHR VALUES
-#Log
-dfc["log_com"] = np.log(dfc.real_com)
-
 #Moving Average
-dfc["moving_ave_com"] = dfc.real_com.rolling(window=4,center=True).mean()
-
-#Grouwth Rate
-dfc["rate_of_change_com"]= dfc['moving_ave_com'].pct_change()
+moving_ave_com1 = dfc.real_com.rolling(window=4, center=True).mean()
+moving_ave_com2 = moving_ave_com1.drop(index='1994-Q1', axis=0)
+moving_ave_com2 = moving_ave_com2.values.tolist()
+moving_ave_com2.append(np.nan)
+dfc['moving_ave_com'] = (moving_ave_com1 + moving_ave_com2) / 2
 
 #Differenre of moving average
-dfc["diff_com"]= dfc['moving_ave_com'].diff(periods=1)
-
-#2nd orderDifferenre of moving average
-dfc["diff_two_com"]= dfc['diff_com'].diff(periods=1)
+dfc['diff_com'] = dfc['moving_ave_com'].diff(periods=1)
 
 #Year over Year
 dfc['YoY_com']= np.nan
