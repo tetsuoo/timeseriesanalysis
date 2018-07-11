@@ -55,6 +55,12 @@ for i in range(len(year)):
 
 dfw = pd.DataFrame(dfw, date, columns=['real_wage'])
 
+dfw = dfw.drop(['1990-Q1', '1990-Q2', '1990-Q3', '1990-Q4',
+                '1991-Q1', '1991-Q2', '1991-Q3', '1991-Q4',
+                '1992-Q1', '1992-Q2', '1992-Q3', '1992-Q4',
+                '1993-Q1', '1993-Q2', '1993-Q3', '1993-Q4'])
+
+
 ##CREATE OTEHR VALUES
 #Moving Average
 moving_ave_wage1 = dfw.real_wage.rolling(window=4, center=True).mean()
